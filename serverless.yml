@@ -12,6 +12,7 @@ package:
   exclude:
     - .venv/**
     - node_modules/**
+    - __pycache__/**
 
 functions:
   read:
@@ -26,4 +27,3 @@ functions:
 
 plugins:
   - serverless-python-requirements
-  - serverless-apigateway-service-proxy

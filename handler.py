@@ -10,15 +10,15 @@ get_val = lambda st, e: db.table.query(KeyConditionExpression=Key(st).eq(e[st.lo
 
 def read_handler(event: Dict[str, str], context):
     """
-    event  ~ {reduction: test} 
+    event  ~ {reduction: test}
     """
     return db.read(event["reduction"])
-    
+
 def write_handler(event: Dict[str, Optional[str]], context):
     """
     event ~ { reduction: test ,  url: test.com}
     """
-    
+
     if event["reduction"] and not get_val("Reduction", event):
         resp = event["reduction"]
         db.create(resp, event['url'])
@@ -26,8 +26,8 @@ def write_handler(event: Dict[str, Optional[str]], context):
     short = get_val("URL", event)
     if short:
         return short
-    response = db.client.describe_table(TableName='Urls') 
+    response = db.client.describe_table(TableName='Urls')
     uid = response['Table']['ItemCount']
     reduct = encode_url(uid)
     db.create(reduct, event['url'])
-    return reduct
+    return {"Reduction": reduct}
